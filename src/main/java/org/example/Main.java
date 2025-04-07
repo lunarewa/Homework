@@ -1,51 +1,68 @@
 package org.example;
 
-import org.example.first.Cat;
-import org.example.first.Dog;
-import org.example.first.Miska;
-import org.example.second.Krug;
-import org.example.second.Pryam;
-import org.example.second.Trey;
-
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Задание 1");
-       Cat[] cat = new Cat[] {new Cat("Барсик", false),new Cat("Кок", false), new Cat("Тим", false)};
-       cat[0].run(50);
-       cat[1].run(100);
-       cat[2].run(70);
-        Dog[] dog = new Dog[] {new Dog("Боб"), new Dog("Кеша"), new Dog("Микки"), new Dog("Юра")};
-        dog[0].run(300);
-        dog[1].run(50);
-        dog[2].run(400);
-        dog[3].run(250);
-        dog[0].swim(5);
-        dog[3].swim(7);
-        System.out.println("Количество кошек: " + cat.length);
-        System.out.println("Количество собак: " + dog.length);
+        public static void Arraysize(String[][] array) throws MyArraySizeException {
+            if (array == null) {
+                throw new MyArraySizeException("Массив не может быть null");
+            }
 
-        Miska miska=new Miska(100);
-        cat[0].eat(10);
-        cat[1].eat(10);
-        cat[2].eat(100);
+            if (array.length != 4) {
+                throw new MyArraySizeException("Количество строк должно быть 4, но в массиве " + array.length);
+            }
 
-        System.out.println("Осталось еды: " + miska.getFoodAmount());
-        miska.addFood(20);
-        System.out.println("Осталось еды: " + miska.getFoodAmount());
+            for (int i = 0; i < array.length; i++) {
+                if (array[i].length != 4) {
+                    throw new MyArraySizeException("Количество столбцов в строке " + (i + 1) +
+                            " должно быть 4, но в массиве " + array[i].length);
+                }
+            }
+        }
 
-        System.out.println("Задание 2");
+        public static int Arraysum(String[][] array) throws MyArraySizeException, MyArrayDataException {
+            Arraysize(array);
 
-        Krug krug = new Krug(5,"Зеленый", "Желтый");
-        Pryam pryam = new Pryam(5,6,"Синий", "Фиолетовый");
-        Trey trey = new Trey(5,4,2,"Белый", "Красный");
-        krug.info();
-        pryam.info();
-        trey.info();
+            int sum = 0;
+            for (int i = 0; i < array.length; i++) {
+                for (int j = 0; j < array[i].length; j++) {
+                    String currentValue = array[i][j];
+                    try {
+                        int number = Integer.parseInt(currentValue);
+                        sum += number;
+                    } catch (NumberFormatException e) {
+                        throw new MyArrayDataException(i, j, currentValue);
+                    }
+                }
+            }
+            return sum;
+        }
+        public static void ArrayException(String[][] array) {
+            try {
+                int sum = Arraysum(array);
+                System.out.println("Сумма: " + sum);
+            } catch (MyArraySizeException e) {
+                System.out.println("Ошибка размера массива: " + e.getMessage());
+            } catch (MyArrayDataException e) {
+                System.out.println("Ошибка в данных массива: " + e.getMessage());
+            }
+        }
+
+        public static void main(String[] args) {
+            System.out.println("1. Проверка размера массива");
+            String[][] correctArray = {
+                    {"6", "6", "6", "6"},
+                    {"5", "5", "5"},
+                    {"1", "1", "1", "1"},
+                    {"3", "4", "5", "6"}
+            };
+            ArrayException(correctArray);
+
+            System.out.println("\n2: Проверка данных массива");
+            String[][] wrongDataArray = {
+                    {"1", "1", "1", "1"},
+                    {"2", "2", "2", "2"},
+                    {"3", "3", "3", "3"},
+                    {"4", "4", "4", "4"}
+            };
+            ArrayException(wrongDataArray);
+        }
     }
-
-
-}
-
-
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
