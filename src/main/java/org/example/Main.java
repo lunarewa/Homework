@@ -49,7 +49,7 @@ public class Main {
         public static void main(String[] args) {
             System.out.println("1. Проверка размера массива");
             String[][] correctArray = {
-                    {"6", "6", "6", "6"},
+                    {"6", "6", "6", "5"},
                     {"5", "5", "5"},
                     {"1", "1", "1", "1"},
                     {"3", "4", "5", "6"}

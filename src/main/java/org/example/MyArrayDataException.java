@@ -3,13 +3,13 @@ package org.example;
 class MyArrayDataException extends Exception {
     private int str;
     private int stl;
-    private String znach;
+    private String z;
 
-    public MyArrayDataException(int str, int stl, String znach) {
-        super(String.format("значение '%s' не является числом", str, stl, znach));
+    public MyArrayDataException(int str, int stl, String z) {
+        super(String.format("значение '%s' не является числом", str, stl, z));
         this.str = str;
         this.stl = stl;
-        this.znach = znach;
+        this.z = z;
     }
 
     public int getStr() {
@@ -21,6 +21,6 @@ class MyArrayDataException extends Exception {
     }
 
     public String getZnach() {
-        return znach;
+        return z;
     }
 }
