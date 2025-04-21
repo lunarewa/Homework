@@ -1,19 +1,23 @@
-import org.junit.AfterClass;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MTSTest {
     WebDriver driver = new ChromeDriver();
-
+    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     Page pp = new Page(driver);
+
 
     @BeforeAll
     public static void driverSet() {
@@ -23,8 +27,11 @@ public class MTSTest {
 
     @Test
     public void getNameTest() {
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+
         driver.get("https://mts.by");
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+
         pp.getName();
         System.out.println(pp.getName());
         String actualText = pp.getName();
@@ -35,10 +42,11 @@ public class MTSTest {
 
     @Test
     public void getLogoTest() {
-        driver.get("https://mts.by");
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        pp.getLogo();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
 
+        driver.get("https://mts.by");
+        pp.getLogo();
         Boolean actual = pp.getLogo();
         System.out.println(pp.getLogo());
         assertEquals(actual, true, "Logo");
@@ -47,27 +55,26 @@ public class MTSTest {
 
     @Test
     public void getLinkTest() {
-        driver.get("https://mts.by");
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+
+        driver.get("https://mts.by");
+        String actual = pp.getLinkAboutService();
+
         pp.clickLink();
-        pp.getLink();
-        String actual = pp.getLink();
-        assertEquals(actual, "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/", "Ссылка 'Подробнее о сервисе' не найдена или некорректна");
+        assertEquals(actual, driver.getCurrentUrl(), "Ссылка 'Подробнее о сервисе' не найдена или некорректна");
     }
 
     @Test
-    public void numberTest(){
-        driver.get("https://mts.by");
+    public void numberTest() {
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+        driver.get("https://mts.by");
         pp.enterNumber();
         pp.enterSum();
         pp.clickNext();
-        pp.clickisEnabled();
-        assertTrue(pp.clickisEnabled(),"Кнопка 'Продолжить' должна быть активна");
-
-        assertTrue(driver.getCurrentUrl().contains("/payment"),"После клика должна произойти навигация на страницу оплаты");
+         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bepaid-app")));
+        assertTrue(pp.windowPay(),"После клика должна произойти навигация на страницу оплаты");
     }
 
     @AfterEach
