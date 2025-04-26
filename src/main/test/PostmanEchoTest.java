@@ -17,7 +17,7 @@ public class PostmanEchoTest {
 
     @DisplayName("GET запрос")
     @Test
-    public void postmanGetTest() {
+    public void postmanGetTest(){
         given()
                 .queryParam("foo1", "bar1")
                 .queryParam("foo2", "bar2")
