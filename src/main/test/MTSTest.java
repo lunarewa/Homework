@@ -1,3 +1,4 @@
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -24,21 +25,22 @@ public class MTSTest {
     public static void driverSet() {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
 
-    }
 
+    }
+    @DisplayName("Проверка названия блока")
     @Test
     public void getNameTest() {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
         driver.get("https://mts.by");
-
         pp.getName();
         System.out.println(pp.getName());
         String actualText = pp.getName();
-        String expectedText = "Онлайн пополнение без комиссии";
+        String expectedText = "Онлайн пополнение\nбез комиссии";
         assertEquals(actualText, expectedText, "Название блока не соответствует ожидаемому");
     }
 
+    @DisplayName("Проверка наличия логотипов")
     @Test
     public void getLogoTest() {
         driver.manage().window().maximize();
@@ -50,7 +52,7 @@ public class MTSTest {
         System.out.println(pp.getLogo());
         assertEquals(actual, true, "Logo");
     }
-
+    @DisplayName("Проверка ссылки 'Подробнее о сервисе'")
     @Test
     public void getLinkTest() {
         driver.manage().window().maximize();
@@ -62,6 +64,7 @@ public class MTSTest {
         assertEquals(actual, driver.getCurrentUrl(), "Ссылка 'Подробнее о сервисе' не найдена или некорректна");
     }
 
+    @DisplayName("Проверка перехода на форму оплаты")
     @Test
     public void numberTest() {
         driver.manage().window().maximize();
@@ -116,7 +119,7 @@ public class MTSTest {
         assertEquals("E-mail для отправки чека", pp.getLinkAboutDebtEmail(), "Название блока не соответствует ожидаемому");
     }
 
-    @DisplayName("Форма оплаты")
+    @DisplayName("Проверка формы оплаты")
     @Test
     public void formPayTest() {
         driver.manage().window().maximize();
